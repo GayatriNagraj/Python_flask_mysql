@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+
+        <!-- Task Insertion Form -->
+        <form action="{{ url_for('insert') }}" method="POST">
+            <label for="task_id">Task ID:</label>
+            <input type="number" name="task_id" placeholder="Enter task ID" required>
+
+            <label for="task_title">Task Title:</label>
+            <input type="text" name="task_title" placeholder="Enter task title" required>
+
+            <label for="task_description">Task Description:</label>
+            <input type="text" name="task_description" placeholder="Enter task description" required>
+
+            <button type="submit">Add Task</button>
+        </form>
+
+        <!-- Task List -->
+        <h2>Existing Tasks</h2>
+        <table>
+           
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task[0] }}</td>
+                    <td>{{ task[1] }}</td>
+                    <td>{{ task[2] }}</td>
+                    <td>
+                        <div class="actions">
+                            <!-- Update Button -->
+                            <form action="{{ url_for('update', task_id=task[0]) }}" method="POST">
+                                <input type="hidden" name="task_id" value="{{ task[0] }}">
+                                <input type="text" name="task_title" value="{{ task[1] }}" required>
+                                <input type="text" name="task_description" value="{{ task[2] }}" required><br>
+                                <button type="submit">Update</button>
+                            </form>
+                            <!-- Delete Button -->
+                            <form action="{{ url_for('delete', task_id=task[0]) }}" method="POST">
+                                <button type="submit">Delete</button>
+                            </form>
+
+                    </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
